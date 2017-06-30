@@ -61,6 +61,7 @@ static  NSString *kContentCellID = @"kContentCellID";
         _collectionView.dataSource = self;
         _collectionView.delegate = self;
         _collectionView.bounces = NO;
+        _collectionView.backgroundColor = [UIColor redColor];
         [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:kContentCellID];
         
     }
@@ -82,7 +83,9 @@ static  NSString *kContentCellID = @"kContentCellID";
         [view removeFromSuperview];
     }
     UIViewController *childVc = self.childVcs[indexPath.item];
+    
     childVc.view.frame = cell.contentView.bounds;
+    
     [cell.contentView addSubview:childVc.view];
     return cell;
 }
@@ -116,22 +119,33 @@ static  NSString *kContentCellID = @"kContentCellID";
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (scrollView.contentOffset.x == self.startOffsetX || _isForbidDelegate) {
+    if ((scrollView.contentOffset.x == self.startOffsetX) || (self.isForbidDelegate ==YES)) {
         return;
     }
     CGFloat progress = 0;
     NSInteger targetIndex = 0;
-    NSInteger sourceIndex = (self.startOffsetX / self.collectionView.width);
+    NSInteger sourceIndex = 0;
+    
+    progress = (int)scrollView.contentOffset.x % (int)scrollView.width / scrollView.width;
+    
+    if (progress == 0) return;
+    NSUInteger index = (int)scrollView.contentOffset.x / (int)scrollView.width;
+
     //判断用户是左滑动还是右滑动
     if (scrollView.contentOffset.x > self.startOffsetX) { //左滑动
-        targetIndex = sourceIndex + 1;
-        progress =  (self.collectionView.contentOffset.x - self.startOffsetX) / self.collectionView.width;
+        sourceIndex = index;
+        targetIndex = index +1;
+
+        if (targetIndex > self.childVcs.count -1) return;
     }else
     {
-        targetIndex = sourceIndex - 1;
-        progress = (self.startOffsetX - self.collectionView.contentOffset.x) / self.collectionView.width;
-
+        sourceIndex = index + 1;
+        targetIndex = index ;
+        progress = 1 - progress;
+        if (targetIndex <0) return;
     }
+    
+
     [self.delegate contentView:self sourceIndex:sourceIndex targetIndex:targetIndex progress:progress];
 
     

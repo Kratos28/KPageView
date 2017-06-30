@@ -10,6 +10,7 @@
 #import "KPageStyle.h"
 #import "KContentView.h"
 #import "UIView+KExtension.h"
+
 struct ColorRGB
 {
     CGFloat red;
@@ -17,6 +18,27 @@ struct ColorRGB
     CGFloat blue;
 };
 typedef struct ColorRGB ColorRGB;
+
+
+@interface UIColor (getColor)
+- (ColorRGB )getRGB;
+@end
+
+@implementation UIColor (getColor)
+
+- (ColorRGB )getRGB
+{
+    CGFloat red = 0;
+    CGFloat green = 0;
+    CGFloat blue = 0;
+    [self getRed:&red green:&green blue:&blue alpha:nil];
+
+    ColorRGB RGB = {red* 255,green* 255,blue* 255};
+    return RGB;
+}
+
+@end
+
 
 @interface KTitleView () <KContentViewDelegate>
 @property (nonatomic ,strong) NSArray *titles;
@@ -63,6 +85,7 @@ typedef struct ColorRGB ColorRGB;
     if (_scrollView == nil) {
         _scrollView = [[UIScrollView alloc]init];
         _scrollView.frame = self.bounds;
+        _scrollView.showsHorizontalScrollIndicator = NO;
         _scrollView.showsVerticalScrollIndicator = NO;
         _scrollView.scrollsToTop = NO;
 
@@ -92,12 +115,17 @@ typedef struct ColorRGB ColorRGB;
     return _coverView;
 }
 
+
+
+
 - (instancetype)initWithFrame:(CGRect)frame style:(KPageStyle *)style title:(NSArray *)titles
 {
     if (self = [super initWithFrame:frame]) {
         
         self.style = style;
         self.titles = titles;
+        self.selectRGB = [self.style.selectColor getRGB];
+        self.normalRGB =  [self.style.normalColor getRGB];
         [self setupUI];
     }
     return self;
@@ -133,7 +161,7 @@ typedef struct ColorRGB ColorRGB;
 
 - (void)setupCoverView
 {
-    if (self.style.isShowCoverView == NO) {
+    if (self.style.isShowCoverView == NO || self.style.isScaleEnable) {
         return;
     }
     [self.scrollView insertSubview:self.coverView atIndex:0];
@@ -148,8 +176,8 @@ typedef struct ColorRGB ColorRGB;
         coverW += 2 * self.style.coverMargin;
     }
     self.coverView.frame = CGRectMake(coverX, coverY, coverW, coverH);
-    self.layer.cornerRadius = self.style.coverRadius;
-    self.layer.masksToBounds = true;
+    self.coverView.layer.cornerRadius = self.style.coverRadius;
+    self.coverView.layer.masksToBounds = true;
     
    
 }
@@ -187,13 +215,16 @@ typedef struct ColorRGB ColorRGB;
         }
         titleLabel.frame = CGRectMake(labelX, labelY, labelW, labelH);
     }
-    // 设置scale属性
-    if (self.style.isScaleEnable) {
-        [(UILabel *)self.titleLabels.firstObject setTransform:CGAffineTransformMakeScale(self.style.maxScale, self.style.maxScale)];
-    }
+   
     if (self.style.isScrollEnable) {
         UILabel *label = self.titleLabels.lastObject;
         self.scrollView.contentSize = CGSizeMake(CGRectGetMaxX(label.frame) + self.style.titleMargin * 0.5, 0);
+    }
+    // 设置scale属性
+    if (self.style.isScaleEnable) {
+        [(UILabel *)self.titleLabels.firstObject setTransform:CGAffineTransformMakeScale(self.style.maxScale, self.style.maxScale)];
+        UILabel *label = self.titleLabels.lastObject;
+        self.scrollView.contentSize = CGSizeMake(CGRectGetMaxX(label.frame) + self.style.titleMargin+self.style.maxScale , 0);
     }
 }
 
@@ -220,6 +251,7 @@ typedef struct ColorRGB ColorRGB;
         [UIView animateWithDuration:0.25 animations:^{
             sourceLabel.transform = CGAffineTransformIdentity;
             targetLabel.transform = CGAffineTransformMakeScale(self.style.maxScale, self.style.maxScale);
+
         }];
     }
     
@@ -243,7 +275,7 @@ typedef struct ColorRGB ColorRGB;
 //调整位置
 - (void)adjustLabelPosition:(UILabel *)targetLabel
 {
-    if (self.style.isScaleEnable == NO) return ;
+    if (self.style.isScrollEnable == NO) return ;
     CGFloat offsetX = targetLabel.center.x - self.bounds.size.width * 0.5;
     
     if (offsetX < 0) {
@@ -267,14 +299,19 @@ typedef struct ColorRGB ColorRGB;
 {
     UILabel *sourceLabel = self.titleLabels[sourceIndex];
     UILabel *targetLabel = self.titleLabels[targetIndex];
-    sourceLabel.textColor = [UIColor colorWithRed:self.selectRGB.red - progress * self.deltaRGB.red green:self.selectRGB.green - progress * self.deltaRGB.green blue:self.selectRGB.blue - progress * self.deltaRGB.blue alpha:1.0];
-    targetLabel.textColor = [UIColor colorWithRed:self.normalRGB.red + progress * self.deltaRGB.red green:self.normalRGB.green + progress * self.deltaRGB.green blue:self.selectRGB.blue + progress * self.deltaRGB.blue alpha:1.0];
     
+  
+    sourceLabel.textColor = [UIColor colorWithRed:(self.selectRGB.red - progress * self.deltaRGB.red) /255.0f green:(self.selectRGB.green - progress * self.deltaRGB.green)/255.0f blue:(self.selectRGB.blue - progress * self.deltaRGB.blue)/255.0f  alpha:1.0];
+    
+
+    targetLabel.textColor = [UIColor colorWithRed:(self.normalRGB.red + progress * self.deltaRGB.red)/255.0f  green:(self.normalRGB.green + progress * self.deltaRGB.green)/255.0f  blue:(self.normalRGB.blue + progress * self.deltaRGB.blue) /255.0f alpha:1.0];
+
+
     
     if (self.style.isScaleEnable) {
         CGFloat deltaScale = self.style.maxScale - 1.0;
         sourceLabel.transform = CGAffineTransformMakeScale(self.style.maxScale - progress * deltaScale, self.style.maxScale - progress * deltaScale);
-          sourceLabel.transform = CGAffineTransformMakeScale(1.0 + progress * deltaScale, 1.0 + progress * deltaScale);
+          targetLabel.transform = CGAffineTransformMakeScale(1.0 + progress * deltaScale, 1.0 + progress * deltaScale);
     }
     if (self.style.isShowBottomLine) {
         CGFloat deltaX =  targetLabel.frame.origin.x - sourceLabel.frame.origin.x;
@@ -311,25 +348,5 @@ typedef struct ColorRGB ColorRGB;
 
 
 
-@interface UIColor (getColor)
-- (ColorRGB )getRGB;
-@end
-
-@implementation UIColor (getColor)
-
-- (ColorRGB )getRGB
-{
-    CGFloat red = 0;
-    CGFloat green = 0;
-    CGFloat blue = 0;
-    [self getRed:&red green:&green blue:&blue alpha:nil];
-//    return @{@"red": @(red *255),
-//             @"green": @(green *255),
-//             @"blue": @(blue *255)};
-     ColorRGB RGB = {red,green,blue};
-    return RGB;
-}
-
-@end
 
 

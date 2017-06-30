@@ -28,6 +28,11 @@
 
 @property (nonatomic ,assign) id<KPageViewDelegate> delegate;
 @property (nonatomic ,assign) id<KPageViewDataSource> dataSource;
+
+- (UICollectionViewCell *)dequeueReusableCell:(NSString *)string  forIndexPath:(NSIndexPath*)indexPath;
+
+- (void)registerCell:(Class)cellClass identifier:(NSString *)identifier;
+
 - (instancetype)initWithFrame:(CGRect)frame style:(KPageStyle *)style titles:(NSArray *)titles childVcs:(NSArray *)childVcs parentVc:(UIViewController *)parentVc;
 - (instancetype)initWithFrame:(CGRect)frame style:(KPageStyle *)style titles:(NSArray *)titles layout:(KPageViewLayout *)layout;
 

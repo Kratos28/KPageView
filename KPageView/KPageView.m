@@ -85,12 +85,15 @@
     self.collectionView = [[UICollectionView alloc]initWithFrame:collectionFrame collectionViewLayout:self.layout];
     self.collectionView.pagingEnabled = YES;
     self.collectionView.scrollsToTop =NO;
+    self.collectionView.showsHorizontalScrollIndicator = NO;
+    self. collectionView.dataSource = self;
+    self.collectionView.delegate = self;
+    [self addSubview:self.collectionView];
     
 
 }
 - (void)collectionViewDidEndScroll
 {
-//    let point = CGPoint(x: layout.sectionInset.left + collectionView.contentOffset.x, y: layout.sectionInset.top)
     CGPoint point = CGPointMake(self.layout.sectionInset.left + self.collectionView.contentOffset.x, self.layout.sectionInset.top);
     NSIndexPath *indexPath =  [self.collectionView indexPathForItemAtPoint:point];
     if (indexPath == nil) {
@@ -122,11 +125,23 @@
     self. pageControl.currentPage = pageIndex;
 
 }
+
+- (UICollectionViewCell *)dequeueReusableCell:(NSString *)identifier  forIndexPath:(NSIndexPath*)indexPath
+{
+    return [self.collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+}
+
+- (void)registerCell:(Class)cellClass identifier:(NSString *)identifier
+{
+    [self.collectionView registerClass:cellClass forCellWithReuseIdentifier:identifier];
+}
+
 #pragma mark UICollectionViewDataSource
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    if (self.dataSource && [self.dataSource respondsToSelector:@selector(numberOfSectionsInCollectionView:)]) {
-        [self.dataSource numberOfSectionInPageView:self];
+    if (self.dataSource && [self.dataSource respondsToSelector:@selector(numberOfSectionInPageView:)]) {
+        NSLog(@"%ld", [self.dataSource numberOfSectionInPageView:self]);
+       return  [self.dataSource numberOfSectionInPageView:self];
     }
     return 0;
 }
@@ -148,10 +163,10 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.dataSource && [self.delegate respondsToSelector:@selector(pageView:cellForItemAtIndexPath:)]) {
+    if (self.dataSource && [self.dataSource respondsToSelector:@selector(pageView:cellForItemAtIndexPath:)]) {
         return [self.dataSource pageView:self cellForItemAtIndexPath:indexPath];
     }
-    return nil;
+    return [[UICollectionViewCell alloc]init];
 }
 #pragma mark UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
