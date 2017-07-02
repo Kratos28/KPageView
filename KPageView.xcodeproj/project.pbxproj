@@ -17,6 +17,8 @@
 		0A1FB3291F03D12F00112F04 /* KContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1FB3281F03D12F00112F04 /* KContentView.m */; };
 		0A1FB32C1F03D57600112F04 /* KPageViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1FB32B1F03D57600112F04 /* KPageViewLayout.m */; };
 		0A1FB32F1F03D6E400112F04 /* KTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1FB32E1F03D6E400112F04 /* KTitleView.m */; };
+		0A62FD751F08FB3E00C0FF70 /* 控制器模式.gif in Resources */ = {isa = PBXBuildFile; fileRef = 0A62FD741F08FB3E00C0FF70 /* 控制器模式.gif */; };
+		0A62FD771F08FBFE00C0FF70 /* CollectionView模式.gif in Resources */ = {isa = PBXBuildFile; fileRef = 0A62FD761F08FBFE00C0FF70 /* CollectionView模式.gif */; };
 		0AD96A121F050FC5004639F6 /* UIView+KExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD96A111F050FC5004639F6 /* UIView+KExtension.m */; };
 		0AD96A151F051E75004639F6 /* KPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD96A141F051E75004639F6 /* KPageView.m */; };
 /* End PBXBuildFile section */
@@ -40,6 +42,8 @@
 		0A1FB32B1F03D57600112F04 /* KPageViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KPageViewLayout.m; sourceTree = "<group>"; };
 		0A1FB32D1F03D6E400112F04 /* KTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTitleView.h; sourceTree = "<group>"; };
 		0A1FB32E1F03D6E400112F04 /* KTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTitleView.m; sourceTree = "<group>"; };
+		0A62FD741F08FB3E00C0FF70 /* 控制器模式.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "控制器模式.gif"; sourceTree = "<group>"; };
+		0A62FD761F08FBFE00C0FF70 /* CollectionView模式.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "CollectionView模式.gif"; sourceTree = "<group>"; };
 		0AD96A101F050FC5004639F6 /* UIView+KExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+KExtension.h"; sourceTree = "<group>"; };
 		0AD96A111F050FC5004639F6 /* UIView+KExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+KExtension.m"; sourceTree = "<group>"; };
 		0AD96A131F051E75004639F6 /* KPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KPageView.h; sourceTree = "<group>"; };
@@ -60,6 +64,8 @@
 		0A1FB3001F03BD7B00112F04 = {
 			isa = PBXGroup;
 			children = (
+				0A62FD741F08FB3E00C0FF70 /* 控制器模式.gif */,
+				0A62FD761F08FBFE00C0FF70 /* CollectionView模式.gif */,
 				0A1FB30B1F03BD7B00112F04 /* KPageView */,
 				0A1FB30A1F03BD7B00112F04 /* Products */,
 			);
@@ -176,8 +182,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A1FB31C1F03BD7B00112F04 /* LaunchScreen.storyboard in Resources */,
+				0A62FD751F08FB3E00C0FF70 /* 控制器模式.gif in Resources */,
 				0A1FB3191F03BD7B00112F04 /* Assets.xcassets in Resources */,
 				0A1FB3171F03BD7B00112F04 /* Main.storyboard in Resources */,
+				0A62FD771F08FBFE00C0FF70 /* CollectionView模式.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

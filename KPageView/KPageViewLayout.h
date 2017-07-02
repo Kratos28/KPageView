@@ -14,5 +14,5 @@
 @property (nonatomic ,assign) CGFloat itemSpacing;
 @property (nonatomic ,assign) CGFloat lineSpacing;
 @property (nonatomic ,assign) UIEdgeInsets sectionInset;
-
+@property (nonatomic ,assign) NSInteger pageCount;
 @end

@@ -21,45 +21,46 @@ static   NSString   *kCollectionViewCellID = @"kCollectionViewCellID";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-//    KPageStyle *style = [[KPageStyle alloc]init];
-//    style.isScrollEnable = YES;
-//    style.isScaleEnable = YES;
-//    style.isShowCoverView = YES;
-//    style.isShowBottomLine = YES;
-//    NSArray *titles = @[@"123", @"游戏游戏游戏", @"haha游戏", @"ha", @"hahahaha", @"hahahahahahaha", @"hahahahaha", @"hahahahahahahahahahaha"];
-//    NSMutableArray *childVC = [NSMutableArray array];
-//    for (NSString *titile  in titles) {
-//        UIViewController *vc = [[UIViewController alloc]init];
-//        
-//        vc.view.backgroundColor = [UIColor colorWithRed:arc4random() %255/255.0 green:arc4random() %255/255.0 blue:arc4random()  %255/255.0 alpha:1];
-//        [childVC addObject:vc];
-//    }
-//    CGRect pageFrame = CGRectMake(0, 64, self.view.width, self.view.height -64);
-//    KPageView *pageView = [[KPageView alloc]initWithFrame:pageFrame style:style titles:titles childVcs:childVC parentVc:self];
-//    pageView.backgroundColor = [UIColor blueColor];
-//    [self.view addSubview:pageView];
-    
-    
-     KPageStyle *style = [[KPageStyle alloc]init];
+    KPageStyle *style = [[KPageStyle alloc]init];
     style.isScrollEnable = YES;
-     NSMutableArray *childVC = [NSMutableArray array];
-    
-    
-    KPageViewLayout *layout = [[KPageViewLayout alloc]init];
-    layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
-    layout.lineSpacing = 10;
-    layout.itemSpacing = 10;
-    layout.cols = 4;
-    layout.rows = 2;
-     NSArray *titles = @[@"123", @"游戏游戏游戏", @"haha游戏", @"ha", @"hahahaha", @"hahahahahahaha", @"hahahahaha", @"hahahahahahahahahahaha"];
-    CGRect pageFrame = CGRectMake(0, 64, self.view.width,300);
-    KPageView *pageView = [[KPageView alloc]initWithFrame:pageFrame style:style titles:titles layout:layout];
-    pageView.dataSource = self;
-    pageView.delegate = self;
-    [pageView registerCell:[UICollectionViewCell class] identifier:kCollectionViewCellID];
-    pageView.backgroundColor = [UIColor redColor];
+    style.isScaleEnable = YES;
+    style.isShowCoverView = YES;
+    style.isShowBottomLine = YES;
+    NSArray *titles = @[@"123", @"游戏游戏游戏", @"haha游戏", @"ha", @"hahahaha", @"hahahahahahaha", @"hahahahaha", @"hahahahahahahahahahaha"];
+    NSMutableArray *childVC = [NSMutableArray array];
+    for (NSString *titile  in titles) {
+        UIViewController *vc = [[UIViewController alloc]init];
+        
+        vc.view.backgroundColor = [UIColor colorWithRed:arc4random() %255/255.0 green:arc4random() %255/255.0 blue:arc4random()  %255/255.0 alpha:1];
+        [childVC addObject:vc];
+    }
+    CGRect pageFrame = CGRectMake(0, 64, self.view.width, self.view.height -64);
+    KPageView *pageView = [[KPageView alloc]initWithFrame:pageFrame style:style titles:titles childVcs:childVC parentVc:self];
+    pageView.backgroundColor = [UIColor blueColor];
     [self.view addSubview:pageView];
     
+    
+//     KPageStyle *style = [[KPageStyle alloc]init];
+//    style.isScrollEnable = NO;
+//     NSMutableArray *childVC = [NSMutableArray array];
+//    
+//    
+//    KPageViewLayout *layout = [[KPageViewLayout alloc]init];
+//    layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
+//    layout.lineSpacing = 10;
+//    layout.itemSpacing = 10;
+//    layout.cols = 4;
+//    layout.rows = 2;
+//    
+//     NSArray *titles = @[@"123", @"游戏游戏游戏", @"haha游戏",@"ads"];
+//    CGRect pageFrame = CGRectMake(0, 64, self.view.width,300);
+//    KPageView *pageView = [[KPageView alloc]initWithFrame:pageFrame style:style titles:titles layout:layout];
+//    pageView.dataSource = self;
+//    pageView.delegate = self;
+//    [pageView registerCell:[UICollectionViewCell class] identifier:kCollectionViewCellID];
+//    pageView.backgroundColor = [UIColor blueColor];
+//    [self.view addSubview:pageView];
+//    
 }
 
 
@@ -87,6 +88,8 @@ static   NSString   *kCollectionViewCellID = @"kCollectionViewCellID";
 - (UICollectionViewCell *)pageView:(KPageView *)pageView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     UICollectionViewCell *cell =  [pageView dequeueReusableCell:kCollectionViewCellID forIndexPath:indexPath];
+    cell.backgroundColor = [UIColor colorWithRed:arc4random_uniform(255)/255.0f green:arc4random_uniform(255)/255.0 blue:arc4random_uniform(255) /255.0f alpha:1];
+
     return cell;
 }
 @end

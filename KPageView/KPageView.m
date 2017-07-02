@@ -78,10 +78,28 @@
     self.titleView.delegate = conentView;
     
 }
+- (UIPageControl *)pageControl
+{
+    if (_pageControl == nil) {
+        CGRect pageControllerFrame = CGRectMake(0, self.collectionView.maxY, self.width, self.style.pageControlHeight);
+        _pageControl = [[UIPageControl alloc]initWithFrame:pageControllerFrame];
+        _pageControl.numberOfPages = 4;
+        _pageControl.enabled = NO;
+    }
+    return _pageControl;
+}
+
 - (void)setupCollectionUI
 {
     [self addSubview:self.titleView];
     CGRect collectionFrame =  CGRectMake(0, self.style.titleHeight, self.width, self.height - self.style.titleHeight-self.style.pageControlHeight);
+    
+    
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
+    layout.itemSize = CGSizeMake(100, 100);
+    layout.minimumLineSpacing = 0;
+    layout.minimumInteritemSpacing = 0;
+    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     self.collectionView = [[UICollectionView alloc]initWithFrame:collectionFrame collectionViewLayout:self.layout];
     self.collectionView.pagingEnabled = YES;
     self.collectionView.scrollsToTop =NO;
@@ -90,8 +108,11 @@
     self.collectionView.delegate = self;
     [self addSubview:self.collectionView];
     
+    [self addSubview:self.pageControl];
+    
 
 }
+
 - (void)collectionViewDidEndScroll
 {
     CGPoint point = CGPointMake(self.layout.sectionInset.left + self.collectionView.contentOffset.x, self.layout.sectionInset.top);
@@ -103,7 +124,7 @@
     
     // 2.如果发现组(section)发生了改变, 那么重新设置pageControl的numberOfPages
     if (indexPath.section != currentSection) {
-        // 2.1.改变pageControl的numberOfPages
+        //改变pageControl的numberOfPages
         
         NSInteger itemCount = 0;
         if ([self.dataSource respondsToSelector:@selector(pageView:numberOfItemInSection:)]) {
@@ -113,10 +134,10 @@
         self.pageControl.numberOfPages = (itemCount -1) / (self.layout.rows *self.layout.cols) + 1;
         
         
-        // 2.2.记录最新的currentSection
+        // 记录最新的currentSection
         currentSection = indexPath.section;
         
-        // 2.3.让titleView选中最新的title
+        // 让titleView选中最新的title
         [self.titleView setCurrentIndex:currentSection];
     }
     
@@ -137,6 +158,8 @@
 }
 
 #pragma mark UICollectionViewDataSource
+
+
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
     if (self.dataSource && [self.dataSource respondsToSelector:@selector(numberOfSectionInPageView:)]) {
@@ -163,10 +186,7 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.dataSource && [self.dataSource respondsToSelector:@selector(pageView:cellForItemAtIndexPath:)]) {
-        return [self.dataSource pageView:self cellForItemAtIndexPath:indexPath];
-    }
-    return [[UICollectionViewCell alloc]init];
+    return [self.dataSource pageView:self cellForItemAtIndexPath:indexPath];
 }
 #pragma mark UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
