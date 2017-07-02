@@ -94,6 +94,8 @@ typedef struct ColorRGB ColorRGB;
 }
 
 
+
+
 -(UIView *)bottomLine
 {
     if (_bottomLine == nil) {
@@ -132,6 +134,8 @@ typedef struct ColorRGB ColorRGB;
     
 }
 
+
+
 - (void)setupUI
 {
     [self addSubview:self.scrollView];
@@ -161,7 +165,7 @@ typedef struct ColorRGB ColorRGB;
 
 - (void)setupCoverView
 {
-    if (self.style.isShowCoverView == NO || self.style.isScaleEnable) {
+    if (self.style.isShowCoverView == NO ) {
         return;
     }
     [self.scrollView insertSubview:self.coverView atIndex:0];
@@ -169,7 +173,12 @@ typedef struct ColorRGB ColorRGB;
     CGFloat coverW = firstLabel.width;
     CGFloat coverH = self.style.coverHeight;
     CGFloat coverX = firstLabel.x;
+    
     CGFloat coverY = (firstLabel.height - coverH) * 0.5;
+//    if (self.style.isScaleEnable) {
+//         coverY = ((firstLabel.height - coverH) * 0.5) -self.style.maxScale * 2.6;
+//
+//    }
     if (self.style.isScrollEnable)
     {
         coverX -= self.style.coverMargin;
@@ -208,6 +217,11 @@ typedef struct ColorRGB ColorRGB;
         {
             labelW = [(NSString *)self.titles[i] boundingRectWithSize:CGSizeMake(MAXFLOAT, 0) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName :titleLabel.font } context:nil].size.width;
             labelX = i == 0 ? self.style.titleMargin * 0.5 : CGRectGetMaxX([self.titleLabels[i-1]frame]) + self.style.titleMargin;
+            if (self.style.isScaleEnable ) {
+                labelX = i == 0 ? self.style.titleMargin * 0.5 : CGRectGetMaxX([self.titleLabels[i-1]frame]) + self.style.titleMargin + self.style .maxScale * 2.6;
+
+            }
+          
         }else
         {
             labelW = self.bounds.size.width / count;
@@ -222,6 +236,8 @@ typedef struct ColorRGB ColorRGB;
     }
     // 设置scale属性
     if (self.style.isScaleEnable) {
+        self.style.isShowBottomLine = NO;
+        self.style.isShowCoverView =NO;
         [(UILabel *)self.titleLabels.firstObject setTransform:CGAffineTransformMakeScale(self.style.maxScale, self.style.maxScale)];
         UILabel *label = self.titleLabels.lastObject;
         self.scrollView.contentSize = CGSizeMake(CGRectGetMaxX(label.frame) + self.style.titleMargin+self.style.maxScale , 0);
@@ -248,6 +264,8 @@ typedef struct ColorRGB ColorRGB;
     
     //调整缩放
     if (self.style.isScaleEnable) {
+        self.style.isShowBottomLine =NO;
+        self.style.isShowCoverView = NO;
         [UIView animateWithDuration:0.25 animations:^{
             sourceLabel.transform = CGAffineTransformIdentity;
             targetLabel.transform = CGAffineTransformMakeScale(self.style.maxScale, self.style.maxScale);
@@ -258,7 +276,8 @@ typedef struct ColorRGB ColorRGB;
     
     if (self.style.isShowBottomLine) {
         [UIView animateWithDuration:0.25 animations:^{
-            self.bottomLine.frame = CGRectMake(targetLabel.frame.origin.x, 0, targetLabel.frame.size.width, 0);
+            self.bottomLine.x = targetLabel.x;
+            self.bottomLine.width = targetLabel.width;
         }];
     }
     
@@ -266,7 +285,8 @@ typedef struct ColorRGB ColorRGB;
         CGFloat coverX = self.style.isScrollEnable ? (targetLabel.frame.origin.x - self.style.coverMargin ) : targetLabel.frame.origin.x;
         CGFloat coverW = self.style.isScrollEnable ? (targetLabel.frame.size.width + self.style.coverMargin * 2 ) : targetLabel.frame.size.width;
         [UIView animateWithDuration:0.25 animations:^{
-            self.coverView.frame = CGRectMake(coverX, 0, coverW, 0);
+            self.coverView.x = coverX;
+            self.coverView.width = coverW;
         }];
         
     }
@@ -309,6 +329,8 @@ typedef struct ColorRGB ColorRGB;
 
     
     if (self.style.isScaleEnable) {
+        self.style.isShowCoverView = NO;
+        self.style.isShowBottomLine = NO;
         CGFloat deltaScale = self.style.maxScale - 1.0;
         sourceLabel.transform = CGAffineTransformMakeScale(self.style.maxScale - progress * deltaScale, self.style.maxScale - progress * deltaScale);
           targetLabel.transform = CGAffineTransformMakeScale(1.0 + progress * deltaScale, 1.0 + progress * deltaScale);

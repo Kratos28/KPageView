@@ -22,11 +22,15 @@ static   NSString   *kCollectionViewCellID = @"kCollectionViewCellID";
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     KPageStyle *style = [[KPageStyle alloc]init];
+    //tileView是否可以滚动
     style.isScrollEnable = YES;
-    style.isScaleEnable = YES;
-    style.isShowCoverView = YES;
+    //tileView是否可以缩放
+//    style.isScaleEnable = YES;
+    //tileView是否有揭盖
+//    style.isShowCoverView = YES;
+    //tileView是否有下划线
     style.isShowBottomLine = YES;
-    NSArray *titles = @[@"123", @"游戏游戏游戏", @"haha游戏", @"ha", @"hahahaha", @"hahahahahahaha", @"hahahahaha", @"hahahahahahahahahahaha"];
+    NSArray *titles = @[@"123", @"游戏", @"haha游戏", @"ha", @"hahahaha", @"haha", @"fff", @"weff",@"wer"];
     NSMutableArray *childVC = [NSMutableArray array];
     for (NSString *titile  in titles) {
         UIViewController *vc = [[UIViewController alloc]init];
@@ -40,16 +44,21 @@ static   NSString   *kCollectionViewCellID = @"kCollectionViewCellID";
     [self.view addSubview:pageView];
     
     
-//     KPageStyle *style = [[KPageStyle alloc]init];
+//    //TiteView的样式对象
+//    KPageStyle *style = [[KPageStyle alloc]init];
+//    //tileView是否可以滚动
 //    style.isScrollEnable = NO;
-//     NSMutableArray *childVC = [NSMutableArray array];
-//    
-//    
+//    //collectionView布局方式
 //    KPageViewLayout *layout = [[KPageViewLayout alloc]init];
+//    //上下左右边距
 //    layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
+//    //行间距
 //    layout.lineSpacing = 10;
+//    //列间距
 //    layout.itemSpacing = 10;
+//    //设置多少列
 //    layout.cols = 4;
+//    //设置多少行
 //    layout.rows = 2;
 //    
 //     NSArray *titles = @[@"123", @"游戏游戏游戏", @"haha游戏",@"ads"];
@@ -60,14 +69,10 @@ static   NSString   *kCollectionViewCellID = @"kCollectionViewCellID";
 //    [pageView registerCell:[UICollectionViewCell class] identifier:kCollectionViewCellID];
 //    pageView.backgroundColor = [UIColor blueColor];
 //    [self.view addSubview:pageView];
-//    
 }
 
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+
 - (NSInteger)numberOfSectionInPageView:(KPageView *)pageView
 {
     return 4;

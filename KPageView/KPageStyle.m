@@ -22,7 +22,7 @@
         self.titleMargin = 30;
         self.bottomLineColor = [UIColor orangeColor];
         self.bottomLineHeight = 2;
-        self.maxScale = 1.2;
+        self.maxScale = 1.5;
         self.coverBgColor = [UIColor blackColor];
         self.coverAlpha = 0.4;
         self.coverMargin = 8;
