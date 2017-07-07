@@ -1,7 +1,7 @@
 # KPageView
 KPageView 模仿网易新闻选项卡、PageViewController、PageView
 ## <a></a>控制器模式
-![(下拉刷新02-动画图片)](http://images0.cnblogs.com/blog2015/497279/201506/141204402238389.gif)
+![(控制器模式)](https://github.com/Kratos28/KPageView/blob/master/控制器模式.gif)
 
 ```objc
 
