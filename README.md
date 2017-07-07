@@ -48,3 +48,7 @@ static   NSString   *kCollectionViewCellID = @"kCollectionViewCellID";
 @end
 
 ```
+
+## <a></a>CollectionView模式
+![(CollectionView模式)](https://github.com/Kratos28/KPageView/blob/master/CollectionView模式.gif)
+
